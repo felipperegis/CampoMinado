@@ -17,6 +17,11 @@ export default function App() {
         <Fields opened nearMines={4}/>
         <Fields opened nearMines={5}/>
         <Fields opened nearMines={6}/>
+        <Fields mined />
+        <Fields mined opened/>
+        <Fields mined opened exploded/>
+        <Fields flagged/>
+        <Fields flagged opened/>
       <StatusBar style="auto" />
     </View>
   );
