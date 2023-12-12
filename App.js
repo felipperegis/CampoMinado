@@ -1,42 +1,53 @@
+import React, {Component} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import params from './src/params';
-import Fields from './src/components/Fields';
+import minedField from './src/components/minedField';
+import {
+  createMinedBoard
+} from './src/function'
 
-export default function App() {
+export default class App extends Component  {
+
+  constructor(props) {
+    super(props)
+    this.state = this.createState()
+  }
+
+  minesAmount = () => {
+    const cols = params.getColumnsAmount()
+    const rows = params.getRowsAmount()
+    return Math.ceil(cols * rows * params.difficultLevel)
+  }
+
+  createState = () => {
+    const cols = params.getColumnsAmount()
+    const rows = params.getRowsAmount()
+    return {
+      board: createMinedBoard(rows, cols, this.minesAmount()),
+    }
+  }
+  render () {
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}> iniciando o Mines </Text>
       <Text style={styles.instructions}> Tamanho da grade
         {params.getRowsAmount()}x{params.getColumnsAmount()}</Text>
-        <Fields />
-        <Fields opened />
-        <Fields opened nearMines={1}/>
-        <Fields opened nearMines={2}/>
-        <Fields opened nearMines={3}/>
-        <Fields opened nearMines={4}/>
-        <Fields opened nearMines={5}/>
-        <Fields opened nearMines={6}/>
-        <Fields mined />
-        <Fields mined opened/>
-        <Fields mined opened exploded/>
-        <Fields flagged/>
-        <Fields flagged opened/>
+        <View style={styles.board}>
+          <minedField board={this.state.board} />
+        </View>
       <StatusBar style="auto" />
     </View>
   );
 }
-
+}
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex : 1,
+    justifyContent: 'flex-end'
   },
-  welcome: {
-    fontSize:20,
-    textAlign: 'center',
-    margin: 10,
+  board: {
+    alignItems: 'center',
+    backgroundColor: '#aaa'
   }
-});
+})
